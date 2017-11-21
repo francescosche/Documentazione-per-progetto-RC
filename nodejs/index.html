@@ -1,11 +1,245 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>Node.js — Francesco Schettino</title>
         <link href="../shared/style.css" rel="stylesheet" type="text/css" />
         <script src="../shared/script.js"></script>
+        <style>
+            h2 {
+                margin-top: 250px;
+                padding-top: 40px;
+            }
+        </style>
     </head>
     <body>
+        <div class="container">
+            <h1>NodeJS</h1>
+            <p>
+                <a href="https://nodejs.org/it/" target="_blank">NodeJS</a> è un framework basato su JavaScript per la realizzazione di applicazioni, da lato client, che dovranno essere poi fornite lato server.
+            </p>
+            <p>
+                L'approccio di questo framework è principalmente asincrono, ovvero secondo una logica non sequenziale (come quella che guida qualsiasi programma basato su processi o thread), ma secondo una logica guidata dagli eventi, che quindi esegue delle operazioni quando un determinato evento viene verificato.
+            </p>
+            <p>
+                Grazie a questo comportamento, il software può continuare ad eseguire operazioni mentre attende il termine di un processo o la ricezione dei dati da un altro input.
+            </p>
+            <h2>Indice</h2>
 
+            <p>
+                <ul>
+                    <li><a href="#installare-node-js">Installare Node.js</a></li>
+                    <li><a href="#hello-world">Hello world!</a></li>
+                    <li><a href="#npm">NPM: La repo fondamentale</a></li>
+                    <li><a href="#i-moduli">I moduli</a></li>
+                    <li><a href="#utilizzare-i-moduli">Utilizzare moduli</a></li>
+                    <li><a href="#creazione-di-moduli">Creazione di moduli</a></li>
+                    <li><a href="#il-dispatcher">Il dispatcher</a></li>
+                </ul>
+            </p>
+            <h2 id="installare-node-js">Installare Node.js</h2>
+            <p>
+                Per installare Node.js non ci sono da seguire complicati procedimenti o scrivere comandi da terminale; infatti, basta andare <a href="https://nodejs.org/it/" target="_blank">al sito web ufficiale</a> e scaricare l'installer per Windows o Mac.
+            </p>
+            <p>
+                Una volta installato, all'interno del terminale avremo 3 nuovi comandi:
+                <ul>
+                    <li><code>node-waf</code>, che permette di creare nuovi moduli per Node.js</li>
+                    <li><code>node</code>, che permette di eseguire applicazioni in Node.js</li>
+                    <li><code>npm</code>, che facilita la ricerca e l'installazione dei plugin e delle applicazioni già esistenti</li>
+                </ul>
+            </p>
+            <p>
+                Per verificare la correttezza dell'installazione, basterà aprire una finestra del <b>Terminale</b> e scrivere il comando <code>node</code>. Se la shell non risponde con degli errori, vorrà dire che Node.js è stato installato correttamente.
+            </p>
+            <h2 id="hello-world">Hello world!</h2>
+            <p>
+                Ora che l'installazione è avvenuta correttamente, possiamo battezzare il nostro nuovo software con un piccolo test: Hello world!
+            </p>
+            <p>
+                Il codice per testare l'applicazione è:
+            </p>
+<pre><code>const http = require('http');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log('Server running at http://${hostname}:${port}/');
+});</code></pre>
+            <p>
+                Dopo aver scritto questo codice, non dovremo far altro che salvarlo all'interno di un file chiamato <code>helloworld.js</code>, recarci (tramite terminale) nella cartella che contiene il file, ed eseguire il comando <code>node helloworld.js</code>.
+            </p>
+            <p>
+                Ora possiamo recarci, tramite il browser, a <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> e verificare che la pagina mostri la scritta "Hello world", così come scritto nel codice.
+            </p>
+            <p>
+                Il metodo <code>createServer</code> sarà richiamato ogni volta che verrà ricevuto una richiesta HTTP sull'host 127.0.0.1 alla porta 3000, e riceverà come parametri:
+                <ul>
+                    <li><code>req</code>, un oggetto di http.ServerRequest contenente tutte le informazioni relative alla richiesta HTTP ricevuta</li>
+                    <li><code>res</code>, un oggetto di http.ServerResponse che dovrà contenere tutte le informazioni da inviare come risposta all'utente che ha inviato la richiesta</li>
+                </ul>
+            </p>
+            <h2 id="npm">NPM: la repo fondamentale</h2>
+            <p>
+                NPM è il comando principale che si usa in Node.js per cercare, scaricare e aggiornare i pacchetti utilizzati dal nostr software. Allo stesso modo, esso rappresenta anche il nome della repository contenente tutti i package disponibile per l'integrazione con questo linguaggio.
+            </p>
+            <p>
+                Viene installato solitamente assieme a Node.js, e permette di installare pacchetti tramite il seguente comando:
+                <pre><code>npm install [id-pacchetto]</code></pre>
+            </p>
+            <p>
+                Per visualizzare l'elenco dei pacchetti disponibili, invece, è possibile scrivere il comando:
+                <pre><code>npm ls</code></pre>
+                Il quale mostrerà una visualizzazione gerarchica che rappresenta le varie branch di sviluppo dei pacchetti
+            </p>
+            <p>
+                Per quanto riguarda invece l'aggiornamento dei pacchetti, basterà scrivere:
+                <pre><code>npm update -g</code></pre>
+                Che aggiornerà automaticamente tutti i pacchetti per cui sono disponibili delle nuove versioni
+            </p>
+            <h2 id="i-moduli">I moduli</h2>
+            <p>
+                I moduli, in Node.js, sono dei file, scritti in JavaScript, che aggiungono delle funzionalità, come fossero dei framework. Di default, solo alcuni moduli sono implementati nel software, ma è possibile scaricarne altri o scriverli manualmente, in modo da aumentare le funzioni a nostra disposizione.
+            </p>
+            <p>
+                Per integrare un modulo, si usa solitamente l'istruzione <code>require</code>, la quale non fa altro che cercare il modulo specificato e, quando lo trova, creare un oggetto di quel tipo, con dei metodi correlati che faciliteranno poi l'esperienza di sviluppo.
+            </p>
+            <p>
+                &Egrave; anche possibile scrivere dei moduli in base alle necessità dello sviluppatore. Questo è possibile passando all'istruzione <code>require</code> il percorso assoluto o relativo del file da importare, come ad esempio <code>require('../script/file.js')</code>
+            </p>
+            <h5>Il modulo globals</h5>
+            <p>
+                Questo modulo è diverso dagli altri, perchè viene integrato automaticamente in qualsiasi applicazione Node.js. Questo modulo, infatti, fornisce delle istruzioni fondamentali che non sarebbero altrimenti disponibili (come ad esempio <code>require</code>, <code>setTimeout</code>, <code>setInterval</code>, ecc.)
+            </p>
+            <p>
+                Oltre a queste funzioni, fornisce anche degli oggetti sui quali potranno poi essere richiamati metodi fondamentali, come ad esempio la <code>console</code> e le variabili <code>__filename</code> e <code>__dirname</code> che vengono "riempite" non appena l'applicazione viene avviata.
+            </p>
+            <h5>Il modulo http</h5>
+            <p>
+                Principalmente, contiene la classe tramite la quale è possibile avviare un server e far inviare le risposte alle richieste in maniera automatica.
+            </p>
+            <h5>Il modulo url</h5>
+            <p>
+                Fornisce le informazioni relative agli URL, soprattutto quando c'è bisogno di trasformarli da stringhe a oggetti e viceversa.
+            </p>
+            <h5>Il modulo path</h5>
+            <p>
+                Questo modulo permette di lavorare, in locale, con i percorsi (path) del server su quale è realizzata l'applicazione. Fornisce decine di metodi per la navigazione all'interno del filesystem, fondamentale soprattutto per servizzi di storage o servizi che lavorano con i file in remoto.
+            </p>
+            <h5>Il modulo fs (File System)</h5>
+            <p>
+                In collaborazione con il precedente, permette di utilizzare i file presenti sulla macchina sulla quale è avviata l'applicazione, fornendo metodi per la creazione, copia, cancellazione, rinominazione, lettura e scrittura di file e cartelle.
+            </p>
+            <h5>Il modulo util</h5>
+            <p>
+                Questo modulo fornisce una serie di metodi che permettono di lavorare in maniera più facile e veloce, riconoscendo il tipo degli elementi, e fornendo molti altri metodi.
+            </p>
+            <h5>Il modulo net</h5>
+            <p>
+                Principalmente, questo modulo permette di utilizzare le porte del server in modo da rendere la comunicazione più precisa, restringendo o espandendo l'accesso a determinati servizi solamente attraverso determinate porte, che possono essere abilitate o disabilitate anche per una logica client-server.
+            </p>
+            <h2 id="utilizzare-i-moduli">Utilizzare i moduli</h2>
+            <p>
+                Volendo fare un esempio sull'uso dei moduli, possiamo prendere in considerazione il modulo <code>url</code>, che esponde tre metodi principali: <code>url.parse</code>, <code>url.format</code> e <code>url.resolve</code>.
+            </p>
+            <p>
+                Scrivendo il seguente codice all'interno di un file <code>provaurl.js</code>:
+<pre><code>var url = require('url');
+console.log(url.parse('http://www.francescoschettino.it'));
+console.log(url.format({ host: 'www.francescoschettino.it', protocol: 'http' }));</code></pre>
+            </p>
+            <p>
+                Otterremo un risultato molto simile a questo:
+    <pre><code>Url {
+    protocol: 'http:',
+    slashes: true,
+    auth: null,
+    host: 'www.francescoschettino.it',
+    port: null,
+    hostname: 'www.francescoschettino.it',
+    hash: null,
+    search: null,
+    query: null,
+    pathname: '/',
+    path: '/',
+    href: 'http://www.francescoschettino.it/' }
+http://www.francescoschettino.it</code></pre>
+            </p>
+            <h2 id="creazione-di-moduli">Creazione di moduli</h2>
+            <p>
+                I moduli, come abbiamo detto in precedenza, non sono altro che dei file scritti in JavaScript che forniscono delle funzioni rese poi disponibili all'esterno tramite delle istruzioni <code>exports</code>. Un esempio molto intuitivo è riportato qui sotto:
+<pre><code>// somma.js
+
+var somma = function(a, b) {
+    return a+b;
+}
+exports.somma = somma;          // esportiamo la funzione "somma"</code></pre>
+<pre><code>// main.js
+
+var s = require('./somma');     // cerca il file "somma" all'interno della stessa directory
+console.log(s.somma(2,3));      // restituisce 5</code></pre>
+            </p>
+            <h2 id="il-dispatcher">Il dispatcher</h2>
+            <p>
+                Il dispatcher è un modulo (chiamato <code>HttpDispatcher</code>) che permette di riconoscere il tipo di richiesta ricevuto dall'applicazione e inoltrarlo in nel punto corretto, in modo da fornirgli una risposta adeguata.
+            </p>
+            <p>
+                Per poterlo utilizzare è necessario installarlo tramite <code>npm</code> (abbiamo appena visto come fare).
+            </p>
+            <p>
+                Volendo fare un esempio, possiamo pesnare di mostrare due messaggio differenti in base al tipo di richiesta che viene ricevuta. Ad esempio, rispondendo con "get" quando si riceve una richeista di tipo GET e "post" quando si riceve una richiesta di tipo POST. Un risultato del genere si può ottenere tramite il seguente codice:
+<pre><code>var dispatcher = require('httpdispatcher');
+
+dispatcher.onGet("/page1", function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Page One');
+});
+
+dispatcher.onPost("/page2", function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Page Two');
+});
+
+http.createServer(function (req, res) {
+    dispatcher.dispatch(req, res);
+}).listen(3000, '127.0.0.1');</code></pre>
+            </p>
+            <p>
+                Il sorgente è di facile comprensione: abbiamo realizzato un server, in ascolto su <code>localhost:3000</code>, che richiama il metodo <code>dispatch()</code> del modulo <code>dispatcher</code> ottenuto dalla <code>require('httpdispatcher')</code>. Questo metodo verificherà poi se si sta eseguendo una richiesta di tipo GET sulla pagina <code>/get</code> o una richiesta di tipo POST sulla pagina <code>/post</code> e risponderà di conseguenza, con un semplice testo.
+            </p>
+            <p>
+                Il modulo <code>HttpDispatcher</code> è invece composto nel seguente modo:
+<pre><code>var HttpDispatcher = function() {
+    this.listeners = { get: [ ], post: [ ] };
+}
+
+HttpDispatcher.prototype.on = function(method, url, cb) {
+    this.listeners[method].push({
+        cb: cb,
+        url: url
+    });
+}
+
+HttpDispatcher.prototype.onGet = function(url, cb) {
+    this.on('get', url, cb);
+}
+
+HttpDispatcher.prototype.onPost = function(url, cb) {
+    this.on('post', url, cb);
+}</code></pre>
+            </p>
+        </div>
+        <footer>
+            <div class="container" style="text-align: center;">
+                <hr />
+                <small>Copyright &copy; 2017 — <a href="http://github.com/francescosche" target="_blank">Francesco Schettino</a> — La Sapienza Università di Roma</small>
+            </div>
+        </footer>
     </body>
 </html>
