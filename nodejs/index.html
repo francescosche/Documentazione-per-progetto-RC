@@ -13,9 +13,9 @@
     </head>
     <body>
         <div class="container">
-            <h1>NodeJS</h1>
+            <h1>Node.js</h1>
             <p>
-                <a href="https://nodejs.org/it/" target="_blank">NodeJS</a> è un framework basato su JavaScript per la realizzazione di applicazioni, da lato client, che dovranno essere poi fornite lato server.
+                <a href="https://nodejs.org/it/" target="_blank">Node.js</a> è un framework basato su JavaScript per la realizzazione di applicazioni, da lato client, che dovranno essere poi fornite lato server.
             </p>
             <p>
                 L'approccio di questo framework è principalmente asincrono, ovvero secondo una logica non sequenziale (come quella che guida qualsiasi programma basato su processi o thread), ma secondo una logica guidata dagli eventi, che quindi esegue delle operazioni quando un determinato evento viene verificato.
@@ -23,6 +23,11 @@
             <p>
                 Grazie a questo comportamento, il software può continuare ad eseguire operazioni mentre attende il termine di un processo o la ricezione dei dati da un altro input.
             </p>
+
+
+
+
+
             <h2>Indice</h2>
 
             <p>
@@ -33,7 +38,8 @@
                     <li><a href="#i-moduli">I moduli</a></li>
                     <li><a href="#utilizzare-i-moduli">Utilizzare moduli</a></li>
                     <li><a href="#creazione-di-moduli">Creazione di moduli</a></li>
-                    <li><a href="#il-dispatcher">Il dispatcher</a></li>
+                    <li><a href="#invio-di-richieste">Invio di richieste</a></li>
+                    <li><a href="#ricezione-di-richieste">Ricezione di richieste</a></li>
                 </ul>
             </p>
             <h2 id="installare-node-js">Installare Node.js</h2>
@@ -51,6 +57,11 @@
             <p>
                 Per verificare la correttezza dell'installazione, basterà aprire una finestra del <b>Terminale</b> e scrivere il comando <code>node</code>. Se la shell non risponde con degli errori, vorrà dire che Node.js è stato installato correttamente.
             </p>
+
+
+
+
+
             <h2 id="hello-world">Hello world!</h2>
             <p>
                 Ora che l'installazione è avvenuta correttamente, possiamo battezzare il nostro nuovo software con un piccolo test: Hello world!
@@ -85,6 +96,11 @@ server.listen(port, hostname, () => {
                     <li><code>res</code>, un oggetto di http.ServerResponse che dovrà contenere tutte le informazioni da inviare come risposta all'utente che ha inviato la richiesta</li>
                 </ul>
             </p>
+
+
+
+
+
             <h2 id="npm">NPM: la repo fondamentale</h2>
             <p>
                 NPM è il comando principale che si usa in Node.js per cercare, scaricare e aggiornare i pacchetti utilizzati dal nostr software. Allo stesso modo, esso rappresenta anche il nome della repository contenente tutti i package disponibile per l'integrazione con questo linguaggio.
@@ -140,11 +156,26 @@ server.listen(port, hostname, () => {
             <p>
                 Questo modulo fornisce una serie di metodi che permettono di lavorare in maniera più facile e veloce, riconoscendo il tipo degli elementi, e fornendo molti altri metodi.
             </p>
-            <h5>Il modulo net</h5>
+            <h5>Il modulo request</h5>
             <p>
-                Principalmente, questo modulo permette di utilizzare le porte del server in modo da rendere la comunicazione più precisa, restringendo o espandendo l'accesso a determinati servizi solamente attraverso determinate porte, che possono essere abilitate o disabilitate anche per una logica client-server.
+                Modulo utilizzato per la gestione delle richieste in uscita, in modo da inviare richieste ed una app presente su un altro server (o anche sullo stesso) e gestire di conseguenza la risposta ottenuta.
             </p>
+            <h5>Il modulo express</h5>
+            <p>
+                Il modulo <code>express</code>, al contrario del precedente, permette di gestire le richieste in entrata, invece di quelle in uscita, impostando così delle risposte a determinate richieste, e fornendo quindi le corrette informazioni, anche tramite l'elaborazione delle risorse ricevute in ingresso.
+            </p>
+
+
+
+
+
             <h2 id="utilizzare-i-moduli">Utilizzare i moduli</h2>
+            <p>
+                Per poter utilizzare i moduli, c'è bisogno prima di tutti di installarli. Per poterli installare, però, è necessario aver inizializzato un'applicazione nella quale questi moduli verranno utilizzati.
+            </p>
+            <p>
+                Per inizializzare un'applicazione, tramite terminale, dovremo recarci prima di tutto all'interno della cartella nella quale inseriremo tutti i nostri file e poi, tramite il comando <code>npm init</code>, inizializzare la nostra app con tutti i dati che ci verranno richiesti <i>(package name, versione dell'app, descrizione, punto di accesso dell'app, comando di test, URL alla repository git, parole chiave, autore e tipo di licenza)</i>.
+            </p>
             <p>
                 Volendo fare un esempio sull'uso dei moduli, possiamo prendere in considerazione il modulo <code>url</code>, che esponde tre metodi principali: <code>url.parse</code>, <code>url.format</code> e <code>url.resolve</code>.
             </p>
@@ -171,6 +202,11 @@ console.log(url.format({ host: 'www.francescoschettino.it', protocol: 'http' }))
     href: 'http://www.francescoschettino.it/' }
 http://www.francescoschettino.it</code></pre>
             </p>
+
+
+
+
+
             <h2 id="creazione-di-moduli">Creazione di moduli</h2>
             <p>
                 I moduli, come abbiamo detto in precedenza, non sono altro che dei file scritti in JavaScript che forniscono delle funzioni rese poi disponibili all'esterno tramite delle istruzioni <code>exports</code>. Un esempio molto intuitivo è riportato qui sotto:
@@ -185,54 +221,105 @@ exports.somma = somma;          // esportiamo la funzione "somma"</code></pre>
 var s = require('./somma');     // cerca il file "somma" all'interno della stessa directory
 console.log(s.somma(2,3));      // restituisce 5</code></pre>
             </p>
-            <h2 id="il-dispatcher">Il dispatcher</h2>
-            <p>
-                Il dispatcher è un modulo (chiamato <code>HttpDispatcher</code>) che permette di riconoscere il tipo di richiesta ricevuto dall'applicazione e inoltrarlo in nel punto corretto, in modo da fornirgli una risposta adeguata.
-            </p>
-            <p>
-                Per poterlo utilizzare è necessario installarlo tramite <code>npm</code> (abbiamo appena visto come fare).
-            </p>
-            <p>
-                Volendo fare un esempio, possiamo pesnare di mostrare due messaggio differenti in base al tipo di richiesta che viene ricevuta. Ad esempio, rispondendo con "get" quando si riceve una richeista di tipo GET e "post" quando si riceve una richiesta di tipo POST. Un risultato del genere si può ottenere tramite il seguente codice:
-<pre><code>var dispatcher = require('httpdispatcher');
 
-dispatcher.onGet("/page1", function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Page One');
+
+
+
+
+            <h2 id="invio-di-richieste">Invio di richieste</h2>
+            <p>
+                Per l'invio di richieste da parte dell'applicazione ad un'altra applicazione esterna (o anche interna) tramite un URL e dei parametri di tipo GET o POST viene solitamente usata la libreria <code>request</code>, dato che permette di gestire questo tipo di richieste in maniera semplice e sintetica.
+            </p>
+            <p>
+                Il modulo può tranquillamente essere installato tramite <code>npm install request</code> ed essere poi implementato nel file tramite <code>require('request');</code>.
+            </p>
+            <p>
+                Questo modulo potrà poi essere utilizzato senza metodi, ovvero richiamando direttamente la funzione <code>request()</code> passandogli come parametro un URL e una funzione che verrà richiamata al momento di terminazione della request stessa. La funzione da richiamare alla risposta accetterà poi 3 parametri: <code>error</code>, <code>response</code> e <code>body</code>.
+            </p>
+            <p>
+                Inoltre, tramite la funzione <code>request</code>, è possibile specificare alcuni parametri per la richiesta, come ad esempio: il metodo con cui inviare la richiesta, i parametri da passare all'url specificato, i dati del form appena inviato, ecc.
+<pre><code>var request = require('request');
+request({
+	uri: 'http://google.com/search',
+	method: 'get',
+	qs: {
+		'q': 'sapienza'
+	}
+	}, function (error, response, body) {
+		console.log('error:', error);
+		console.log('statusCode:', response && response.statusCode);
+		console.log('body:', body);
+	}
+);</code></pre>
+            </p>
+            <p>
+                Per utilizzare il metodo POST, invece, un codice di esempio è il seguente:
+<pre><code>var request = require('request');
+request({
+	uri: 'http://httpbin.org/post',
+	method: 'post',
+	form: {
+		'q': 'sapienza'
+	}
+	}, function (error, response, body) {
+		console.log('error:', error);
+		console.log('statusCode:', response && response.statusCode);
+		console.log('body:', body);
+	}
+);</code></pre>
+            </p>
+
+
+
+
+
+            <h2 id="ricezione-di-richieste">Ricezione di richieste</h2>
+            <p>
+                Per poter gestire la ricezione di richieste e le eventuali risposte da inviare, è necessario utilizzare un nuovo modulo: <a href="http://expressjs.com/" target="_blank"><code>express</code></a>.
+            </p>
+            <p>
+                Per la gestione delle richieste GET è disponibile, appunto, il metodo <code>.get()</code>, che prende come parametri l'URL al quale le richieste verranno ricevute e una funzione che definisce in che modo rispondere a queste richiste.
+<pre><code>var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
+    res.send('Risposta alla GET');
 });
 
-dispatcher.onPost("/page2", function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Page Two');
+app.listen(3000);</code></pre>
+            </p>
+            <p>
+                Allo stesso modo, per la gestione di richieste di tipo POST, esiste il metodo <code>.post()</code>, che prende in input gli stessi parametri.
+
+<pre><code>var express = require('express');
+var app = express();
+
+app.post('/', function(req, res){
+    res.send('Risposta alla POST');
 });
 
-http.createServer(function (req, res) {
-    dispatcher.dispatch(req, res);
-}).listen(3000, '127.0.0.1');</code></pre>
+app.listen(3000);</code></pre>
             </p>
             <p>
-                Il sorgente è di facile comprensione: abbiamo realizzato un server, in ascolto su <code>localhost:3000</code>, che richiama il metodo <code>dispatch()</code> del modulo <code>dispatcher</code> ottenuto dalla <code>require('httpdispatcher')</code>. Questo metodo verificherà poi se si sta eseguendo una richiesta di tipo GET sulla pagina <code>/get</code> o una richiesta di tipo POST sulla pagina <code>/post</code> e risponderà di conseguenza, con un semplice testo.
+                Per leggere i parametri passati alle varie richieste, è possibile utilizzare il parametro <code>req</code> passato alla funzione, che conterrà, rispettivamente, i valori <code>query</code> e <code>body</code>, i quali, a loro volta, conterranno i parametri veri e propri.<br />
             </p>
             <p>
-                Il modulo <code>HttpDispatcher</code> è invece composto nel seguente modo:
-<pre><code>var HttpDispatcher = function() {
-    this.listeners = { get: [ ], post: [ ] };
-}
+                Ad esempio:
+<pre><code>var express = require('express');
+var app = express();
 
-HttpDispatcher.prototype.on = function(method, url, cb) {
-    this.listeners[method].push({
-        cb: cb,
-        url: url
-    });
-}
+app.get('/get', function(req, res){
+    var p = req.query.parametro;
+    res.send('Parametro della GET: '+p);
+});
 
-HttpDispatcher.prototype.onGet = function(url, cb) {
-    this.on('get', url, cb);
-}
+app.post('/post', function(req, res){
+    var p = req.body.parametro;
+    res.send('Parametro della POST: '+p);
+});
 
-HttpDispatcher.prototype.onPost = function(url, cb) {
-    this.on('post', url, cb);
-}</code></pre>
+app.listen(3000);</code></pre>
+                In questo esempio, chiamando le pagine <code>/get</code> o <code>/post</code> e assegnando un valore al parametro <code>parametro</code>, quel valore verrà mostrato sulla pagina.
             </p>
         </div>
         <footer>
